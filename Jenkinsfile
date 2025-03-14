@@ -11,26 +11,24 @@ pipeline {
                 values 'Chrome', 'Firefox'
             }
         }
-        environment {
-            PLATFORM = "${PLATFORM}"
-            BROWSER = "${BROWSER}"
-        }
         stages {
             stage('Build') {
                 steps {
-                    script {
+                    withEnv(["PLATFORM=${PLATFORM}", "BROWSER=${BROWSER}"]) {
                         echo "Building on Platform: ${PLATFORM} with Browser: ${BROWSER}"
                     }
                 }
             }
             stage('Test') {
                 steps {
-                    sh './simple_script.sh'
+                    withEnv(["PLATFORM=${PLATFORM}", "BROWSER=${BROWSER}"]) {
+                        sh './simple_script.sh'
+                    }
                 }
             }
             stage('Deploy') {
                 steps {
-                    script {
+                    withEnv(["PLATFORM=${PLATFORM}", "BROWSER=${BROWSER}"]) {
                         echo "Deploying on Platform: ${PLATFORM} with Browser: ${BROWSER}"
                     }
                 }
